@@ -13,8 +13,7 @@ var {
   Text,
   TextInput,
   View,
-  Image,
-  TabBarIOS
+  Image
 } = React;
 
 var API_BASE_URL = 'http://bartjsonapi.elasticbeanstalk.com/api/';
