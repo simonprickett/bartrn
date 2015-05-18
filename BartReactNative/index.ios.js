@@ -19,6 +19,7 @@ var {
 var API_BASE_URL = 'http://bartjsonapi.elasticbeanstalk.com/api/';
 var STATION_REQUEST_URL = API_BASE_URL + 'stations';
 var STATUS_REQUEST_URL = API_BASE_URL + 'status';
+var SERVICE_ANNOUNCEMENTS_URL = API_BASE_URL + 'serviceAnnouncements';
 
 var BartReactNative = React.createClass({
   getInitialState: function() {
@@ -29,8 +30,12 @@ var BartReactNative = React.createClass({
       }),
       systemStatus: { 
         traincount: '?',
-        message: '',
-        time: '?',
+        time: '?'
+      },
+      serviceAnnouncements: {
+        bsa: {
+          description: '?'
+        }
       },
       loaded: false
     }
@@ -61,6 +66,15 @@ var BartReactNative = React.createClass({
         console.log(responseData);
       })
       .done();
+
+    fetch(SERVICE_ANNOUNCEMENTS_URL)
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+          serviceAnnouncements: responseData
+        });
+        console.log(responseData);
+      })
   },
 
   // TODO tidy up time formatting rendering!
@@ -75,7 +89,7 @@ var BartReactNative = React.createClass({
             style={styles.headerImage}
             source={require('image!header')}
           />
-          <Text style={styles.systemStatus}>{this.state.systemStatus.time.replace('PDT', '').replace('PST', '').replace(' ', '').replace(':00AM', 'AM').replace(':00PM', 'PM').trim()}: {this.state.systemStatus.traincount} trains operating, {this.state.systemStatus.message === '' ? 'no reported issues' : 'system advisory in place'}.</Text>
+          <Text style={styles.systemStatus}>{this.state.systemStatus.time.replace('PDT', '').replace('PST', '').replace(' ', '').replace(':00AM', 'AM').replace(':00PM', 'PM').trim()}: {this.state.systemStatus.traincount} trains operating. {this.state.serviceAnnouncements.bsa.description}</Text>
         </View>
         <View style={styles.stationListContainer}>
           <Text style={styles.textHeader}>BART Departures</Text>
