@@ -28,6 +28,11 @@ var BartReactNative = React.createClass({
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
       }),
+      systemStatus: { 
+        traincount: '?',
+        message: '',
+        time: '?',
+      },
       loaded: false
     }
   },
@@ -47,15 +52,19 @@ var BartReactNative = React.createClass({
       })
       .done();
 
+    // TODO change to using a proper bsa call to determine no issues!
     fetch(STATUS_REQUEST_URL)
       .then((response) => response.json())
       .then((responseData) => {
+        this.setState({
+          systemStatus: responseData
+        });
         console.log(responseData);
-        // now what?
       })
       .done();
   },
 
+  // TODO tidy up time formatting rendering!
   render: function() {
     if (! this.state.loaded) {
       return this.renderLoadingView();
@@ -67,7 +76,7 @@ var BartReactNative = React.createClass({
             style={styles.headerImage}
             source={require('image!header')}
           />
-          <Text style={styles.systemStatus}>4:51PM: 37 trains operating, no reported issues.</Text>
+          <Text style={styles.systemStatus}>{this.state.systemStatus.time.replace('PDT', '').replace('PST', '').replace(' ', '').replace(':00AM', 'AM').replace(':00PM', 'PM').trim()}: {this.state.systemStatus.traincount} trains operating, {this.state.systemStatus.message === '' ? 'no reported issues' : 'system advisory in place'}.</Text>
         </View>
         <View style={styles.stationListContainer}>
           <Text style={styles.textHeader}>BART Departures</Text>
