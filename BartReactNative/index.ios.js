@@ -16,7 +16,7 @@ var {
   Image
 } = React;
 
-var API_BASE_URL = 'http://bartjsonapi.elasticbeanstalk.com/api/';
+var API_BASE_URL = 'http://bart.crudworks.org/api/';
 var STATION_REQUEST_URL = API_BASE_URL + 'stations';
 var STATUS_REQUEST_URL = API_BASE_URL + 'status';
 var SERVICE_ANNOUNCEMENTS_URL = API_BASE_URL + 'serviceAnnouncements';
